@@ -4,6 +4,9 @@
   "description": "Test website for gleb powered by vue.js",
   "author": "Nikita Bibik <osbib2@gmail.com>",
   "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.mjs,.vue ."
+  },
   "dependencies": {
     "vue": "^2.6.11",
     "vue-router": "^3.3.4"

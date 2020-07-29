@@ -1,0 +1,12 @@
+{
+  "parserOptions": { "ecmaVersion": 2017 },
+  "extends": ["plugin:vue/essential"],
+  "plugins": ["vue"],
+  "ignorePatterns": ["node_modules/**", "dist/**"],
+  "rules": {
+    "vue/max-attributes-per-line": 1,
+    "object-curly-spacing": [2, "always"],
+    "indent": ["warn", 2, { "VariableDeclarator": "first" }],
+    "comma-dangle": ["warn", "always-multiline"]
+  }
+}

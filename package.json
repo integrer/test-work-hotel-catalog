@@ -3,5 +3,29 @@
   "version": "0.0.1",
   "description": "Test website for gleb powered by vue.js",
   "author": "Nikita Bibik <osbib2@gmail.com>",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-router": "^3.3.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^4.1.0",
+    "eslint": "^7.5.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.14.1",
+    "postcss-loader": "^3.0.0",
+    "regenerator-runtime": "^0.13.7",
+    "resolve-url-loader": "^3.1.1",
+    "sass-loader": "^9.0.2",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.44.0",
+    "webpack-cli": "^3.3.12"
+  }
 }

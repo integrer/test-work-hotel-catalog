@@ -3,5 +3,6 @@ module.exports = (contentBase) => ({
     contentBase,
     compress: true,
     port: 5000,
+    hot: true,
   },
 });

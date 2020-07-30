@@ -5,7 +5,7 @@ module.exports = () => ({
   plugins: [
     new HtmlWebpackPlugin({
       template,
-      inject: false,
+      inject: true,
 
       appMountId: "app",
       lang: "ru",

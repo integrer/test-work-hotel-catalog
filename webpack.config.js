@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const contentBase = path.join(__dirname, "dist");
 
-const common = merge(
+const common = merge.merge(
   {
     target: "web",
     entry: { build: "./src" },
@@ -24,7 +24,7 @@ const common = merge(
 
 module.exports = function(_env, argv) {
   if (argv.mode === "production") {
-    return merge(
+    return merge.merge(
       common,
       presets.prod(),
       presets.scss(
@@ -34,7 +34,7 @@ module.exports = function(_env, argv) {
     )
   }
   if (argv.mode === "development") {
-    return merge(
+    return merge.merge(
       common,
       presets.dev(),
       presets.scss(["vue-style-loader"]),

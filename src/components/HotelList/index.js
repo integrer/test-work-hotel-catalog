@@ -1,4 +1,6 @@
-import List from "./List.vue";
-import Filter from "./Filter.vue";
+import HotelList from "./List.vue";
+import HotelFilter from "./Filter.vue";
 
-export { List, Filter };
+export default { HotelList, HotelFilter };
+
+export { emptyQuery } from "./Filter.vue";

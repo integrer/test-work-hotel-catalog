@@ -17,12 +17,7 @@ const clientRules = [
   },
   {
     test: /\.(jpe?g|gif|png|svg|woff|woff2|eot|ttf|otf)$/,
-    use: [{ loader: "file-loader", options: { esModule: false } }],
-  },
-  {
-    test: require.resolve("jquery"),
-    loader: "expose-loader",
-    options: { exposes: ["jQuery", "$"] },
+    use: { loader: "file-loader", options: { esModule: false } },
   },
 ];
 

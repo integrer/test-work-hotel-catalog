@@ -26,8 +26,17 @@ export default {
           <td>{{ hotel.name }}</td>
           <td>
             <div class="row">
-              <div class="col">{{ hotel.description }}</div>
-              <div class="col-auto"><button class="btn">Забронировать</button></div>
+              <div class="col">
+                {{ hotel.description }}
+              </div>
+              <div class="col-auto">
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                >
+                  Забронировать
+                </button>
+              </div>
             </div>
           </td>
         </tr>

@@ -1,11 +1,26 @@
 <script>
+import * as ListComponents from "./components/HotelList";
+
 export default {
-  data: () => ({}),
+  components: Object.assign({}, ListComponents),
+  data: () => ({
+    list: [],
+    filteredList: [],
+  }),
 };
 </script>
 
 <template>
   <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <filter></filter>
+      </div>
+      <div class="col-12 col-md">
+        <list :hotels="filteredList"></list>        
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss">

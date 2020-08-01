@@ -58,7 +58,7 @@ export default {
     resetQuery() {
       this.preventFilterOnce = true;
       this.query = emptyQuery();
-      this.filteredList();
+      this.filterList();
     },
     prepareQuery() {
       return Object.assign({}, this.query,

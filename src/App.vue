@@ -1,11 +1,14 @@
 <script>
 export default {
   data: () => ({}),
-}
+};
 </script>
+
 <template>
-  <content>
-    hello booking!
-    <router-view />
-  </content>
+  <div class="container">
 </template>
+
+<style lang="scss">
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap/scss/bootstrap-reboot.scss";
+</style>

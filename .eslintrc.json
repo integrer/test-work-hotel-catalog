@@ -5,9 +5,9 @@
     "es6": true,
     "node": true
   },
-  "parserOptions": { "ecmaVersion": 2017 },
+  "parserOptions": { "ecmaVersion": 2020 },
   "extends": [
-    "plugin:vue/essential",
+    "plugin:vue/recommended",
     "eslint:recommended",
     "plugin:jsdoc/recommended"
   ],

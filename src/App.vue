@@ -1,6 +1,5 @@
 <script>
 import ListComponents, { emptyQuery } from "./components/HotelList";
-import data from "./data/hotels.json";
 
 import _ from "lodash";
 
@@ -35,6 +34,8 @@ function isSatisfies(query, hotel) {
     && hotel.min_price <= query.priceMax);
 }
 
+const FILTER_DELAY = 500;
+
 export default {
   components: { ...ListComponents },
   data: () => ({
@@ -51,12 +52,16 @@ export default {
     },
   },
   mounted() {
-    this.list = data.hotels;
+    this.loadData();
     
-    const countrySet = new Set(data.hotels.map(h => h.country));
-    this.countries = [...countrySet].map(v => ({ id: v, label: v }));
-
-    this.debouncedFilterList = _.debounce(this.filterList, 500);
+    this.debouncedFilterList = _.debounce(this.filterList, FILTER_DELAY);
+  },
+  methods: {
+    async loadData() {
+      const { hotels } = await import("./data/hotels.json");
+      this.list = hotels;
+      this.countries = [...new Set(hotels.map(h => h.country))]
+        .map(v => ({ id: v, label: v }));
     this.filterList();
   },
     async resetQuery() {

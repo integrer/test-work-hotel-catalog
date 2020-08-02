@@ -33,16 +33,13 @@ export default {
     list: [],
 
     filteredList: [],
-    preventFilterOnce: false,
     query: emptyQuery(),
 
     countries: [],
   }),
   watch: {
     query() {
-      if (!this.preventFilterOnce)
         this.debouncedFilterList();
-      else this.preventFilterOnce = false;
     },
   },
   mounted() {
@@ -54,11 +51,10 @@ export default {
     this.debouncedFilterList = _.debounce(this.filterList, 500);
     this.filterList();
   },
-  methods: {
-    resetQuery() {
-      this.preventFilterOnce = true;
+    async resetQuery() {
       this.query = emptyQuery();
-      this.filterList();
+      await this.$nextTick(); // Wait while watcher reacts
+      this.debouncedFilterList.flush();
     },
     prepareQuery() {
       return Object.assign({}, this.query,

@@ -87,8 +87,8 @@ export default {
 
 <template>
   <div class="container-fluid">
-    <div class="row mt-3">
-      <div class="col-12 col-md-4">
+    <div class="row">
+      <div class="col-12 col-md-4 mt-3">
         <button
           class="btn btn-primary w-100"
           @click="resetQuery"
@@ -101,7 +101,7 @@ export default {
           @input="query = $event"
         />
       </div>
-      <div class="col-12 col-md">
+      <div class="col-12 col-md mt-3">
         <hotel-list :hotels="filteredList" />        
       </div>
     </div>

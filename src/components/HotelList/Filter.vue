@@ -29,9 +29,7 @@ export default {
   }),
   methods: {
     commitValue(prop, v) {
-      this.$emit("input", Object.assign({},
-        this.value,
-        { [prop]: v }));
+      this.$emit("input", { ...this.value, ...{ [prop]: v } });
     },
   },
 }
@@ -63,65 +61,75 @@ export function emptyQuery() {
 
 <template>
   <div>
-    <label class="form-label">Страна</label>
-    <tree-select
-      :value="value.country"
-      :options="countries"
-      placeholder="Выберите страну..."
-      @input="commitValue('country', $event)"
-    />
+    <div class="form-group">
+      <label class="form-label">Страна</label>
+      <tree-select
+        :value="value.country"
+        :options="countries"
+        placeholder="Выберите страну..."
+        @input="commitValue('country', $event)"
+      />
+    </div>
 
-    <label class="form-label">Типы</label>
-    <tree-select
-      :value="value.types"
-      :options="TYPES"
-      :searchable="false"
-      :multiple="true"
-      placeholder="Выберите тип(ы)..."
-      @input="commitValue('types', $event)"
-    />
+    <div class="form-group">
+      <label class="form-label">Типы</label>
+      <tree-select
+        :value="value.types"
+        :options="TYPES"
+        :searchable="false"
+        :multiple="true"
+        placeholder="Выберите тип(ы)..."
+        @input="commitValue('types', $event)"
+      />
+    </div>
 
-    <label class="form-label">Звёзды</label>
-    <tree-select
-      :value="value.stars"
-      :options="starKinds"
-      :searchable="false"
-      :multiple="true"
-      placeholder="Выберите звёздность..."
-      @input="commitValue('stars', $event)"
-    />
-    
-    <label class="form-label">Количество отзывов от</label>
-    <input
-      :value="value.reviewsMin"
-      class="form-control"
-      min="0"
-      type="number"
-      @input="commitValue('reviewsMin', +$event.target.value)"
-    >
+    <div class="form-group">
+      <label class="form-label">Звёзды</label>
+      <tree-select
+        :value="value.stars"
+        :options="starKinds"
+        :searchable="false"
+        :multiple="true"
+        placeholder="Выберите звёздность..."
+        @input="commitValue('stars', $event)"
+      />
+    </div>
 
-    <label class="form-label">Цена до</label>
-    <div class="row">
-      <div class="col-2">
-        0
+    <div class="form-group">
+      <label class="form-label">Количество отзывов от</label>
+      <input
+        :value="value.reviewsMin"
+        class="form-control"
+        min="0"
+        type="number"
+        @input="commitValue('reviewsMin', +$event.target.value)"
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Цена до</label>
+      <div class="row">
+        <div class="col-2">
+          0
+        </div>
+        <div class="col">
+          <input
+            v-model.number="value.priceMax"
+            type="range"
+            class="form-control-range"
+            :max="MAX_PRICE"
+            @input="commitValue('priceMax', +$event.target.value)"
+          >
+        </div>
+        <div class="col-2">
+          {{ MAX_PRICE }}
+        </div>
       </div>
-      <div class="col">
-        <input
-          v-model.number="value.priceMax"
-          type="range"
-          class="form-control-range"
-          :max="MAX_PRICE"
-          @input="commitValue('priceMax', +$event.target.value)"
-        >
-      </div>
-      <div class="col-2">
-        {{ MAX_PRICE }}
+      <div class="row">
+        <span class="border rounded col-auto mx-auto">{{ value.priceMax }}</span>
       </div>
     </div>
-    <div class="row">
-      <span class="border rounded col-auto mx-auto">{{ value.priceMax }}</span>
-    </div>
-  </div>
+  </div>    
 </template>
 
 <style lang="scss">

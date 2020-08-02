@@ -51,7 +51,7 @@ export default {
 <template>
   <div>
     <div v-if="hotels.length !== 0">
-      <table class="table">
+      <table class="table table-responsive-sm">
         <thead>
           <tr>
             <th>Название</th>

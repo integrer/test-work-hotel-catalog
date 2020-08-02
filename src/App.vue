@@ -13,6 +13,14 @@ import _ from "lodash";
  */
 
 /**
+ * @param {*} query input query
+ * @returns {PreparedQuery} Prepared query
+ */
+function prepareQuery(query) {
+  return { ...query, ...{ stars: new Set(query.stars) } };
+}
+
+/**
  * Checks if hotel satisfies specified query
  * 
  * @param {PreparedQuery} query prepared query object
@@ -56,13 +64,9 @@ export default {
       await this.$nextTick(); // Wait while watcher reacts
       this.debouncedFilterList.flush();
     },
-    prepareQuery() {
-      return Object.assign({}, this.query,
-        { stars: new Set(this.query.stars) });
-    },
     filterByQuery() {
       return this.list.filter(
-        _.partial(isSatisfies, this.prepareQuery()));
+        _.partial(isSatisfies, prepareQuery(this.query)));
     },
     filterList() {
       this.filteredList = this.filterByQuery();

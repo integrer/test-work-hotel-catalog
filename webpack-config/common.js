@@ -26,6 +26,7 @@ const config = {
   entry: { build: ["./src", "bootstrap"] },
   output: {
     path: path.resolve(__dirname, "../dist"),
+    chunkFilename: "[name].bundle.js",
     filename: "[name].js",
   },
   module: { rules: clientRules },

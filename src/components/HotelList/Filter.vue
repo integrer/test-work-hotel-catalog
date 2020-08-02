@@ -122,3 +122,7 @@ export function emptyQuery() {
     </div>
   </div>
 </template>
+
+<style lang="scss">
+@import "~@riophae/vue-treeselect/dist/vue-treeselect.css";
+</style>

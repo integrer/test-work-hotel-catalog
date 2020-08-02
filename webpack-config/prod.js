@@ -10,7 +10,12 @@ const {
 
 const config = merge.smartStrategy(mergeStrategy)(commonCfg, {
   mode: "production",
-  devtool: "source-map",
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+  },
+  devtool: "nosources-cheap-source-map",
   module: {
     rules: [
       {

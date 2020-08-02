@@ -48,12 +48,12 @@ export default {
   }),
   watch: {
     query() {
-        this.debouncedFilterList();
+      this.debouncedFilterList();
     },
   },
   mounted() {
     this.loadData();
-    
+
     this.debouncedFilterList = _.debounce(this.filterList, FILTER_DELAY);
   },
   methods: {
@@ -62,8 +62,8 @@ export default {
       this.list = hotels;
       this.countries = [...new Set(hotels.map(h => h.country))]
         .map(v => ({ id: v, label: v }));
-    this.filterList();
-  },
+      this.filterList();
+    },
     async resetQuery() {
       this.query = emptyQuery();
       await this.$nextTick(); // Wait while watcher reacts
@@ -106,6 +106,4 @@ export default {
 <style lang="scss">
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap/scss/bootstrap-reboot.scss";
-
-@import "~@riophae/vue-treeselect/dist/vue-treeselect.css"
 </style>

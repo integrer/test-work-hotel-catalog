@@ -2,6 +2,8 @@ const path = require("path")
 const { VueLoaderPlugin } = require("vue-loader")
 require("babel-polyfill")
 
+require("dotenv").config();
+
 const clientRules = [
   {
     test: /\.js$/,
@@ -25,7 +27,7 @@ const config = {
   target: "web",
   entry: { build: ["./src", "bootstrap"] },
   output: {
-    path: path.resolve(__dirname, "../dist"),
+    path: path.resolve(__dirname, process.env["WEBPACK_OUTPUT_PATH"] || "../dist"),
     chunkFilename: "[name].bundle.js",
     filename: "[name].js",
   },

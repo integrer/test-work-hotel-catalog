@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const {
-  mergeStrategy, htmlOptions, config: commonCfg,
+  mergeStrategy, htmlOptions, config: commonCfg, cleanWebpackPluginPrefs,
 } = require("./common");
 
 
@@ -27,7 +27,7 @@ const config = merge.smartStrategy(mergeStrategy)(commonCfg, {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(cleanWebpackPluginPrefs),
     new MiniCssExtractPlugin({ filename: "style.css" }),
     new HtmlWebpackPlugin(htmlOptions),
   ],

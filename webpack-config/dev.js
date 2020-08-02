@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const {
-  mergeStrategy, htmlOptions, config: commonCfg,
+  mergeStrategy, htmlOptions, config: commonCfg, cleanWebpackPluginPrefs,
 } = require("./common");
 
 
@@ -24,7 +24,10 @@ const client = merge.smartStrategy(mergeStrategy)(commonCfg, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    new CleanWebpackPlugin({
+      cleanStaleWebpackAssets: false,
+      ...cleanWebpackPluginPrefs,
+    }),
     new HtmlWebpackPlugin(htmlOptions),
   ],
 });

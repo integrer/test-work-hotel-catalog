@@ -37,6 +37,20 @@ const config = {
 
 const mergeStrategy = { "module.rules.use": "prepend" };
 
+const cleanWebpackPluginPrefs = {
+  cleanOnceBeforeBuildPatterns: [
+    "build.js",
+    "build.js.map",
+    "*.bundle.js",
+    "*.bundle.js.map",
+    "style.css",
+    "style.css.map",
+    "*.style.css",
+    "*.style.css.map",
+    "index.html",
+  ],
+};
+
 const htmlOptions = {
   inject: false,
   template: require("html-webpack-template"),
@@ -47,4 +61,6 @@ const htmlOptions = {
   mobile: true,
 };
 
-module.exports = { config, mergeStrategy, htmlOptions };
+module.exports = {
+  config, mergeStrategy, htmlOptions, cleanWebpackPluginPrefs,
+};

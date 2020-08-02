@@ -4,10 +4,10 @@ import ListComponents, { emptyQuery } from "./components/HotelList";
 import _ from "lodash";
 
 /** @typedef PreparedQuery
- *  @property {string | null} country Selected country
- *  @property {string | null} type Selected type
+ *  @property {string?} country Selected country
+ *  @property {string?} type Selected type
  *  @property {Set<number>} stars Selected stars
- *  @property {number | null} reviewsMin Minimum reviews
+ *  @property {number} reviewsMin Minimum reviews
  *  @property {number} priceMax Maximum price
  */
 

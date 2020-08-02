@@ -38,7 +38,7 @@ export default {
 
 /** @typedef Query
  *  @property {string?} country Selected country
- *  @property {string?} type Selected type
+ *  @property {string[]} types Selected types
  *  @property {number[]} stars Selected stars
  *  @property {number} reviewsMin Minimum reviews
  *  @property {number} priceMax Maximum price
@@ -52,7 +52,7 @@ export default {
 export function emptyQuery() {
   return {
     country: undefined,
-    type: undefined,
+    types: [],
     stars: [],
     reviewsMin: 0,
     priceMax: Math.ceil(MAX_PRICE / 2),
@@ -71,13 +71,14 @@ export function emptyQuery() {
       @input="commitValue('country', $event)"
     />
 
-    <label class="form-label">Тип</label>
+    <label class="form-label">Типы</label>
     <tree-select
-      :value="value.type"
+      :value="value.types"
       :options="TYPES"
       :searchable="false"
-      placeholder="Выберите тип..."
-      @input="commitValue('type', $event)"
+      :multiple="true"
+      placeholder="Выберите тип(ы)..."
+      @input="commitValue('types', $event)"
     />
 
     <label class="form-label">Звёзды</label>

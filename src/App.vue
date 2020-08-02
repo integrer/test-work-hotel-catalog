@@ -5,7 +5,7 @@ import _ from "lodash";
 
 /** @typedef PreparedQuery
  *  @property {string?} country Selected country
- *  @property {string?} type Selected type
+ *  @property {Set<string>} types Selected types
  *  @property {Set<number>} stars Selected stars
  *  @property {number} reviewsMin Minimum reviews
  *  @property {number} priceMax Maximum price
@@ -16,7 +16,12 @@ import _ from "lodash";
  * @returns {PreparedQuery} Prepared query
  */
 function prepareQuery(query) {
-  return { ...query, ...{ stars: new Set(query.stars) } };
+  return { ...query,
+    ...{
+      types: new Set(query.types),
+      stars: new Set(query.stars),
+    },
+  };
 }
 
 /**
@@ -28,7 +33,7 @@ function prepareQuery(query) {
  */
 function isSatisfies(query, hotel) {
   return ((query.country === undefined || hotel.country === query.country)
-    && (query.type === undefined || hotel.type === query.type)
+    && (query.types.size == 0 || query.types.has(hotel.type))
     && (query.stars.size == 0 || query.stars.has(hotel.stars))
     && hotel.reviews_amount >= query.reviewsMin
     && hotel.min_price <= query.priceMax);

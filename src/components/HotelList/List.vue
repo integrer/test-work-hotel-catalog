@@ -35,13 +35,16 @@ export default {
   },
   watch: {
     hotels() {
-      this.checkPagesOverflow();
+      this.checkPageNumber();
     },
   },
   methods: {
-    checkPagesOverflow() {
+    checkPageNumber() {
       if (this.page > this.pagesTotal) {
         this.page = this.pagesTotal;
+      }
+      if (this.page < 1) {
+        this.page = 1;
       }
     },
   },

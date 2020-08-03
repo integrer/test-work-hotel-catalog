@@ -31,6 +31,7 @@ export default {
   data: () => ({
     priceMaxSetup,
     reviewsMinSetup,
+    MAX_PRICE,
     TYPES: TYPES.map(v => ({ id: v, label: v })),
     starKinds: [
       { label: "1 звезда", id: 1 },

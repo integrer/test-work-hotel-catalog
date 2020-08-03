@@ -4,6 +4,18 @@ import TreeSelect from "@riophae/vue-treeselect";
 const MAX_PRICE = 5000;
 const TYPES = ["Отель", "Апартаменты"];
 
+const priceMaxSetup = Object.freeze({
+  type: "range",
+  max: MAX_PRICE,
+  step: 200,
+});
+
+const reviewsMinSetup = Object.freeze({
+  type: "number",
+  min: 0,
+  step: 5,
+});
+
 export default {
   components: { TreeSelect },
   props: {
@@ -17,7 +29,8 @@ export default {
     },
   },
   data: () => ({
-    MAX_PRICE,
+    priceMaxSetup,
+    reviewsMinSetup,
     TYPES: TYPES.map(v => ({ id: v, label: v })),
     starKinds: [
       { label: "1 звезда", id: 1 },
@@ -99,9 +112,8 @@ export function emptyQuery() {
       <label class="form-label">Количество отзывов от</label>
       <input
         :value="value.reviewsMin"
+        v-bind="reviewsMinSetup"
         class="form-control"
-        min="0"
-        type="number"
         @input="commitValue('reviewsMin', +$event.target.value)"
       >
     </div>
@@ -115,9 +127,8 @@ export function emptyQuery() {
         <div class="col">
           <input
             v-model.number="value.priceMax"
-            type="range"
+            v-bind="priceMaxSetup"
             class="form-control-range"
-            :max="MAX_PRICE"
             @input="commitValue('priceMax', +$event.target.value)"
           >
         </div>

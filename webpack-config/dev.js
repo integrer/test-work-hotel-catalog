@@ -1,16 +1,13 @@
-const merge = require("webpack-merge");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const merge = require('webpack-merge');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const {
-  mergeStrategy, htmlOptions, config: commonCfg, cleanWebpackPluginPrefs,
-} = require("./common");
-
+const { mergeStrategy, htmlOptions, config: commonCfg, cleanWebpackPluginPrefs } = require('./common');
 
 const client = merge.smartStrategy(mergeStrategy)(commonCfg, {
-  mode: "development",
-  devtool: "inline-source-map",
+  mode: 'development',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: commonCfg.output.path,
   },
@@ -18,7 +15,7 @@ const client = merge.smartStrategy(mergeStrategy)(commonCfg, {
     rules: [
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ["vue-style-loader"],
+        use: ['vue-style-loader'],
       },
     ],
   },

@@ -1,5 +1,5 @@
 <script>
-import Pagination from "vuejs-paginate";
+import Pagination from 'vuejs-paginate';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -12,12 +12,15 @@ export default {
     },
   },
   data() {
-    const itemKinds = ["page", "prev", "next"];
-    const paginationClasses = itemKinds.reduce((acc, cur) => {
-      acc[`${cur}Class`] = "page-item";
-      acc[`${cur}LinkClass`] = "page-link";
-      return acc;
-    }, { containerClass: "pagination" });
+    const itemKinds = ['page', 'prev', 'next'];
+    const paginationClasses = itemKinds.reduce(
+      (acc, cur) => {
+        acc[`${cur}Class`] = 'page-item';
+        acc[`${cur}LinkClass`] = 'page-link';
+        return acc;
+      },
+      { containerClass: 'pagination' },
+    );
     return {
       page: 1,
       ITEMS_PER_PAGE,
@@ -48,7 +51,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 
 <template>
@@ -62,10 +65,7 @@ export default {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="hotel of currentChunk"
-            :key="hotel.name"
-          >
+          <tr v-for="hotel of currentChunk" :key="hotel.name">
             <td>{{ hotel.name }}</td>
             <td>
               <div class="row">
@@ -73,12 +73,7 @@ export default {
                   {{ hotel.description }}
                 </div>
                 <div class="col-auto">
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                  >
-                    Забронировать
-                  </button>
+                  <button class="btn btn-primary" type="button">Забронировать</button>
                 </div>
               </div>
             </td>
@@ -96,11 +91,6 @@ export default {
         v-bind="paginationClasses"
       />
     </div>
-    <div
-      v-else
-      class="border rounded text-center bg-light py-3 w-100"
-    >
-      Записей не найдено
-    </div>
+    <div v-else class="border rounded text-center bg-light py-3 w-100">Записей не найдено</div>
   </div>
 </template>

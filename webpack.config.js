@@ -1,8 +1,4 @@
-module.exports = function(_env, argv) {
-  if (argv.mode === "production") {
-    return require("./webpack-config").prod;
-  }
-  if (argv.mode === "development") {
-    return require("./webpack-config").dev;
-  }
-}
+/* eslint-disable @typescript-eslint/no-var-requires */
+module.exports = function (_env, argv) {
+  return require('./webpack-config')[argv.mode === 'production' ? 'prod' : 'dev'];
+};

@@ -1,4 +1,4 @@
 module.exports = {
-  dev: require("./dev"),
-  prod: require("./prod"),
-}
+  dev: require('./dev'),
+  prod: require('./prod'),
+};

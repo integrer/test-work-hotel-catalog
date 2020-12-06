@@ -25,7 +25,7 @@ const clientRules = [
 
 const config = {
   target: 'web',
-  entry: { build: ['./src', 'bootstrap'] },
+  entry: { build: ['./frontend', 'bootstrap'] },
   output: {
     path: path.resolve(__dirname, process.env['WEBPACK_OUTPUT_PATH'] || '../dist'),
     chunkFilename: '[name].bundle.js',

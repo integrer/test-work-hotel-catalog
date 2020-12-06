@@ -35,8 +35,8 @@ function prepareQuery(query) {
 function isSatisfies(query, hotel) {
   return (
     (query.country === undefined || hotel.country === query.country) &&
-    (query.types.size == 0 || query.types.has(hotel.type)) &&
-    (query.stars.size == 0 || query.stars.has(hotel.stars)) &&
+    (query.types.size === 0 || query.types.has(hotel.type)) &&
+    (query.stars.size === 0 || query.stars.has(hotel.stars)) &&
     hotel.reviews_amount >= query.reviewsMin &&
     hotel.min_price <= query.priceMax
   );

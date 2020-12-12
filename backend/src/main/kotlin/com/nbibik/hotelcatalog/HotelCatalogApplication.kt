@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class HotelcatalogApplication
+class HotelCatalogApplication
 
 fun main(args: Array<String>) {
-    runApplication<HotelcatalogApplication>(*args)
+    runApplication<HotelCatalogApplication>(*args)
 }

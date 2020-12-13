@@ -1,0 +1,17 @@
+#!/bin/sh
+
+RED='\033[0;31m'
+NC='\033[0m'
+
+if ! [ -f '.env' ]; then
+  # shellcheck disable=SC2059
+  printf "${RED}Error: No '.env' file was provided!${NC}\n"
+  printf "Suggestion: run 'cp .env.example .env' and replace variable values with own values\n"
+  exit 1
+fi
+
+set -o allexport
+. ./.env
+set +o allexport
+
+./mvnw spring-boot:run

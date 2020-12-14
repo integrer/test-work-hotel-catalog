@@ -1,8 +1,8 @@
 package com.nbibik.hotelcatalog.dao
 
 import com.nbibik.hotelcatalog.entity.Hotel
-import org.springframework.data.repository.CrudRepository
+import com.nbibik.hotelcatalog.entity.QHotel
 import org.springframework.stereotype.Repository
 
 @Repository
-interface HotelRepository : CrudRepository<Hotel, Int>
+interface HotelRepository : BaseRepository<Hotel, QHotel, Int>

@@ -5,11 +5,7 @@ import kotlin.properties.Delegates
 
 @Entity
 @Table(name = "hotels")
-class Hotel {
-    @get:Id
-    @get:GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int = 0
-
+class Hotel : BaseEntity() {
     @get:Column(nullable = false)
     lateinit var name: String
 

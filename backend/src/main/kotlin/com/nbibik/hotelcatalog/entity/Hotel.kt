@@ -1,4 +1,4 @@
-package com.nbibik.hotelcatalog.model
+package com.nbibik.hotelcatalog.entity
 
 import javax.persistence.*
 import kotlin.properties.Delegates

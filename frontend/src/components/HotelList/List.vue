@@ -1,5 +1,6 @@
 <script>
 import Pagination from 'vuejs-paginate';
+import { constant } from 'lodash';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -15,22 +16,7 @@ export default {
       required: true,
     },
   },
-  data() {
-    const itemKinds = ['page', 'prev', 'next'];
-    const paginationClasses = itemKinds.reduce(
-      (acc, cur) => {
-        acc[`${cur}Class`] = 'page-item';
-        acc[`${cur}LinkClass`] = 'page-link';
-        return acc;
-      },
-      { containerClass: 'pagination' },
-    );
-    return {
-      page: 1,
-      ITEMS_PER_PAGE,
-      paginationClasses,
-    };
-  },
+  data: () => ({ page: 1 }),
   computed: {
     currentChunk() {
       const begin = (this.page - 1) * this.ITEMS_PER_PAGE;
@@ -38,6 +24,17 @@ export default {
     },
     pagesTotal() {
       return Math.ceil(this.hotels.length / this.ITEMS_PER_PAGE);
+    },
+    ITEMS_PER_PAGE: constant(ITEMS_PER_PAGE),
+    paginationClasses: () => {
+      const itemKinds = ['page', 'prev', 'next'];
+      return {
+        ...itemKinds.reduce(
+          (acc, cur) => ({ ...acc, [`${cur}Class`]: 'page-item', [`${cur}LinkClass`]: 'page-link' }),
+          {},
+        ),
+        containerClass: 'pagination',
+      };
     },
   },
   watch: {

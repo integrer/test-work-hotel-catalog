@@ -1,27 +1,30 @@
 <script>
 import ListComponents, { emptyQuery } from './components/HotelList';
 
-import _ from 'lodash';
+import { debounce, partial } from 'lodash';
 
-/** @typedef PreparedQuery
- *  @property {string?} country Selected country
- *  @property {Set<string>} types Selected types
- *  @property {Set<number>} stars Selected stars
+/** @typedef RawQuery
+ *  @property {string | undefined} country Selected country
+ *  @property {string[]} types Selected types
+ *  @property {number} stars Selected stars
  *  @property {number} reviewsMin Minimum reviews
  *  @property {number} priceMax Maximum price
  */
 
+/** @typedef {RawQuery} PreparedQuery
+ *  @property {Set<string>} types Selected types
+ *  @property {Set<number>} stars Selected stars
+ */
+
 /**
- * @param {*} query input query
+ * @param {RawQuery} query input query
  * @returns {PreparedQuery} Prepared query
  */
 function prepareQuery(query) {
   return {
     ...query,
-    ...{
-      types: new Set(query.types),
-      stars: new Set(query.stars),
-    },
+    types: new Set(query.types),
+    stars: new Set(query.stars),
   };
 }
 
@@ -63,7 +66,7 @@ export default {
   mounted() {
     this.loadData();
 
-    this.debouncedFilterList = _.debounce(this.filterList, FILTER_DELAY);
+    this.debouncedFilterList = debounce(this.filterList, FILTER_DELAY);
   },
   methods: {
     async loadData() {
@@ -83,7 +86,7 @@ export default {
       this.debouncedFilterList.flush();
     },
     filterByQuery() {
-      return this.list.filter(_.partial(isSatisfies, prepareQuery(this.query)));
+      return this.list.filter(partial(isSatisfies, prepareQuery(this.query)));
     },
     filterList() {
       this.filteredList = this.filterByQuery();
@@ -97,10 +100,10 @@ export default {
     <div class="row">
       <div class="col-12 col-md-4 mt-3">
         <button class="btn btn-primary w-100" @click="resetQuery">Очистить фильтры</button>
-        <hotel-filter :value="query" :countries="countries" @input="query = $event" />
+        <HotelFilter v-model="query" :countries="countries" />
       </div>
       <div class="col-12 col-md mt-3">
-        <hotel-list :hotels="filteredList" :is-loading="isLoading" />
+        <HotelList :hotels="filteredList" :is-loading="isLoading" />
       </div>
     </div>
   </div>

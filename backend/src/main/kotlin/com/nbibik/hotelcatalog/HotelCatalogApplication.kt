@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class HotelCatalogApplication
 
 fun main(args: Array<String>) {
-    runApplication<HotelCatalogApplication>(*args)
+  runApplication<HotelCatalogApplication>(*args)
 }

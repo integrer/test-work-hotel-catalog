@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class BaseEntity {
-    @get:Id
-    @get:GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int = 0
+  @get:Id
+  @get:GeneratedValue(strategy = GenerationType.AUTO)
+  var id: Int = 0
 }

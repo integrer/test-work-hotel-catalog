@@ -48,6 +48,7 @@ export default {
   components: { ...ListComponents },
   data: () => ({
     list: [],
+    isLoading: true,
 
     filteredList: [],
     query: emptyQuery(),
@@ -66,10 +67,15 @@ export default {
   },
   methods: {
     async loadData() {
-      const { hotels } = await import('./data/hotels.json');
-      this.list = hotels;
-      this.countries = [...new Set(hotels.map(h => h.country))].map(v => ({ id: v, label: v }));
-      this.filterList();
+      this.isLoading = true;
+      try {
+        const { hotels } = await import('./data/hotels.json');
+        this.list = hotels;
+        this.countries = [...new Set(hotels.map(h => h.country))].map(v => ({ id: v, label: v }));
+        this.filterList();
+      } finally {
+        this.isLoading = false;
+      }
     },
     async resetQuery() {
       this.query = emptyQuery();
@@ -94,7 +100,7 @@ export default {
         <hotel-filter :value="query" :countries="countries" @input="query = $event" />
       </div>
       <div class="col-12 col-md mt-3">
-        <hotel-list :hotels="filteredList" />
+        <hotel-list :hotels="filteredList" :is-loading="isLoading" />
       </div>
     </div>
   </div>

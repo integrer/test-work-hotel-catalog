@@ -1,7 +1,7 @@
 package com.nbibik.hotelcatalog.service
 
 import com.nbibik.hotelcatalog.dao.HotelRepository
-import com.nbibik.hotelcatalog.entity.Hotel
+import com.nbibik.hotelcatalog.model.Hotel as DtoHotel
 import com.nbibik.hotelcatalog.entity.QHotel
 import com.nbibik.hotelcatalog.model.PagedList
 import com.querydsl.core.types.dsl.BooleanExpression
@@ -14,10 +14,10 @@ class HotelListService {
   @Autowired
   lateinit var repository: HotelRepository
 
-  fun getList(query: Query = Query.default, pageConfig: PageConfig = PageConfig.default): PagedList<Hotel> {
+  fun getList(query: Query = Query.default, pageConfig: PageConfig = PageConfig.default): PagedList<DtoHotel> {
     val pageRequest = PageRequest.of(pageConfig.page, pageConfig.pageSize)
     val page = getPredicateOf(query)?.let { repository.findAll(it, pageRequest) } ?: repository.findAll(pageRequest)
-    return PagedList(page.totalPages, pageConfig.page, page.toList())
+    return PagedList(page.totalPages, pageConfig.page, page.toList().map(DtoHotel::from))
   }
 
   companion object {

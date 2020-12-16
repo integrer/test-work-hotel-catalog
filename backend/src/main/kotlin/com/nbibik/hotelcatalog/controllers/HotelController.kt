@@ -20,7 +20,7 @@ class HotelController {
         @RequestParam(value = "minReviews") minReviews: Int?,
         @RequestParam(value = "maxPrice") maxPrice: Float?,
         @RequestParam(value = "page") page: Int?,
-    ): Iterable<Hotel> = hotelListService.getList(
+    ) = hotelListService.getList(
         HotelListService.Query(country, types?.asIterable(), stars?.asIterable(), minReviews, maxPrice),
         HotelListService.PageConfig.of(page)
     )

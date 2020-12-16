@@ -22,14 +22,14 @@ class HotelListService {
 
     companion object {
         private fun getPredicateOf(query: Query): BooleanExpression? {
-            val predicates = mutableListOf<BooleanExpression>()
             val (country, types, stars, minReviews, maxPrice) = query
-            if (country != null) predicates.add(QHotel.hotel.country.equalsIgnoreCase(country))
-            if (types != null && types.any()) predicates.add(QHotel.hotel.type.`in`(types.toSet()))
-            if (stars != null && stars.any()) predicates.add(QHotel.hotel.stars.`in`(stars.toSet()))
-            if (minReviews != null) predicates.add(QHotel.hotel.reviewsAmount.goe(minReviews))
-            if (maxPrice != null) predicates.add(QHotel.hotel.minPrice.loe(maxPrice))
-            return predicates.reduceOrNull { acc, cur -> acc.and(cur) }
+            return sequenceOf(
+                country?.let(QHotel.hotel.country::equalsIgnoreCase),
+                types?.takeIf { it.any() }?.toSet()?.let(QHotel.hotel.type::`in`),
+                stars?.takeIf { it.any() }?.toSet()?.let(QHotel.hotel.stars::`in`),
+                minReviews?.let(QHotel.hotel.reviewsAmount::goe),
+                maxPrice?.let(QHotel.hotel.minPrice::loe),
+            ).filterNotNull().reduceOrNull { acc, cur -> acc.and(cur) }
         }
     }
 

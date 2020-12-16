@@ -11,19 +11,11 @@ const client = merge.smartStrategy(mergeStrategy)(commonCfg, {
   devServer: {
     contentBase: commonCfg.output.path,
   },
-  module: {
-    rules: [
-      {
-        test: /\.(sa|sc|c)ss$/,
-        use: ['vue-style-loader'],
-      },
-    ],
-  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new CleanWebpackPlugin({
-      cleanStaleWebpackAssets: false,
       ...cleanWebpackPluginPrefs,
+      cleanStaleWebpackAssets: false,
     }),
     new HtmlWebpackPlugin(htmlOptions),
   ],

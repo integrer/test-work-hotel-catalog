@@ -1,17 +1,5 @@
 require('dotenv').config();
 const path = require('path');
-const webpack = require('webpack');
-require('babel-polyfill');
-
-/////////////
-// PostCSS plugins
-/////////////
-
-const postCssCssNano = require('cssnano');
-const postCssAutoprefixer = require('autoprefixer');
-const postCssUrl = require('postcss-url');
-const postCssPresetEnv = require('postcss-preset-env');
-const postCssFlexBugsFixes = require('postcss-flexbugs-fixes');
 
 ////////////////////////////////
 // Webpack server config
@@ -23,58 +11,9 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 // Webpack plugins
 ////////////////////////////////
 
-const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
-////////////////////////////////
-// Misc
-////////////////////////////////
-
-const DartSass = require('sass');
-const Fibers = require('fibers');
-
-/**
- * Loader chain for style factory
- *
- * @param {'css'|'scss'|'sass'} syntax - Style syntax kind
- * @param {boolean} isExtract - Denotes if css chunks extraction is required
- * @returns {webpack.RuleSetUseItem[]} Loader chain
- */
-const styleLoader = (syntax, isExtract = true) => [
-  ...(isExtract ? [{ loader: ExtractCssChunks.loader, options: { hmr: !IS_PRODUCTION } }] : []),
-  {
-    loader: 'css-loader',
-    options: {
-      sourceMap: !IS_PRODUCTION,
-    },
-  },
-  {
-    loader: 'postcss-loader',
-    options: {
-      sourceMap: !IS_PRODUCTION,
-      postcssOptions: {
-        plugins: [
-          postCssFlexBugsFixes(),
-          postCssPresetEnv(),
-          postCssUrl(),
-          postCssAutoprefixer(),
-          ...(IS_PRODUCTION ? [postCssCssNano()] : []),
-        ],
-      },
-    },
-  },
-  {
-    loader: 'sass-loader',
-    options: {
-      sourceMap: !IS_PRODUCTION,
-      implementation: DartSass,
-      sassOptions: {
-        fiber: Fibers,
-        indentedSyntax: syntax === 'sass',
-      },
-    },
-  },
-];
+const { styleLoaders, stylePlugins } = require('./styles');
 
 const clientRules = [
   {
@@ -87,7 +26,7 @@ const clientRules = [
   },
   ...['sass', 'scss', 'css'].map(syntax => ({
     test: new RegExp(`\\.${syntax}$`),
-    use: styleLoader(syntax),
+    use: styleLoaders(syntax, IS_PRODUCTION),
   })),
   {
     test: /\.(jpe?g|gif|png|svg|woff|woff2|eot|ttf|otf)$/,
@@ -105,13 +44,7 @@ const config = {
     filename: 'js/[name].js?[hash]',
   },
   module: { rules: clientRules },
-  plugins: [
-    new ExtractCssChunks({
-      filename: 'css/[name].css?[hash]',
-      chunkFilename: 'css/[name].css?[hash]',
-    }),
-    new VueLoaderPlugin(),
-  ],
+  plugins: [...stylePlugins(), new VueLoaderPlugin()],
 };
 
 const mergeStrategy = { 'module.rules.use': 'prepend' };

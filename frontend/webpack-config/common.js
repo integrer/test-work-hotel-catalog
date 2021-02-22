@@ -51,14 +51,7 @@ const mergeStrategy = { 'module.rules.use': 'prepend' };
 
 const cleanWebpackPluginPrefs = {
   cleanOnceBeforeBuildPatterns: [
-    'build.js',
-    'build.js.map',
-    '*.bundle.js',
-    '*.bundle.js.map',
-    'style.css',
-    'style.css.map',
-    '*.style.css',
-    '*.style.css.map',
+    ...['build.js', '*.bundle.js', 'style.css', '*.style.css'].flatMap(n => [n, n + '.map']),
     '/css/**',
     'index.html',
   ],

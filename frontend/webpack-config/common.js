@@ -10,6 +10,8 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 // Webpack plugins
 ////////////////////////////////
 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 
 const { styleLoaders, stylePlugins } = require('./styles');
@@ -50,24 +52,6 @@ const clientRules = [
   },
 ];
 
-const config = {
-  mode: process.env.NODE_ENV,
-  target: 'web',
-  entry: { build: ['./src', 'bootstrap'] },
-  output: {
-    path: path.resolve(__dirname, process.env['WEBPACK_OUTPUT_PATH'] || '../dist'),
-    chunkFilename: 'js/[name].js?[hash]',
-    filename: 'js/[name].js?[hash]',
-  },
-  resolve: {
-    extensions: ['*', '.js', '.ts', '.vue', ...styleSyntax.map(s => '.' + s)],
-  },
-  module: { rules: clientRules },
-  plugins: [...stylePlugins(), new VueLoaderPlugin()],
-};
-
-const mergeStrategy = { 'module.rules.use': 'prepend' };
-
 const cleanWebpackPluginPrefs = {
   cleanOnceBeforeBuildPatterns: [
     ...['build.js', '*.bundle.js', 'style.css', '*.style.css'].flatMap(n => [n, n + '.map']),
@@ -86,9 +70,40 @@ const htmlOptions = {
   mobile: true,
 };
 
-module.exports = {
-  config,
-  mergeStrategy,
-  htmlOptions,
-  cleanWebpackPluginPrefs,
+const config = {
+  mode: process.env.NODE_ENV,
+  target: 'web',
+  entry: { build: ['./src', 'bootstrap'] },
+  devtool: IS_PRODUCTION ? 'inline-source-map' : 'nosources-cheap-source-map',
+  optimization: IS_PRODUCTION
+    ? {
+        splitChunks: {
+          chunks: 'all',
+        },
+      }
+    : undefined,
+  output: {
+    path: path.resolve(__dirname, process.env['WEBPACK_OUTPUT_PATH'] || '../dist'),
+    chunkFilename: 'js/[name].js?[hash]',
+    filename: 'js/[name].js?[hash]',
+  },
+  resolve: {
+    extensions: ['*', '.js', '.ts', '.vue', ...styleSyntax.map(s => '.' + s)],
+  },
+  module: { rules: clientRules },
+  plugins: [
+    ...stylePlugins(),
+    new VueLoaderPlugin(),
+    new CleanWebpackPlugin(
+      IS_PRODUCTION
+        ? cleanWebpackPluginPrefs
+        : {
+            ...cleanWebpackPluginPrefs,
+            cleanStaleWebpackAssets: false,
+          },
+    ),
+    new HtmlWebpackPlugin(htmlOptions),
+  ],
 };
+
+module.exports = config;

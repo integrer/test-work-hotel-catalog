@@ -37,7 +37,6 @@ module.exports = {
   rules: {
     'vue/max-attributes-per-line': 1,
     'object-curly-spacing': [2, 'always'],
-    indent: ['warn', 2, { VariableDeclarator: 'first' }],
     'comma-dangle': ['warn', 'always-multiline'],
     quotes: ['warn', 'single'],
   },

@@ -17,8 +17,8 @@ const styleSyntax = ['sass', 'scss', 'css'];
 
 const clientRules = [
   {
-    test: /\.js$/,
-    use: { loader: 'babel-loader', options: { presets: ['@babel/preset-env'] } },
+    test: /\.[jt]s$/,
+    use: ['babel-loader'],
   },
   {
     test: /\.vue$/,

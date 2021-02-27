@@ -10,7 +10,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 // Webpack plugins
 ////////////////////////////////
 
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
 const { styleLoaders, stylePlugins } = require('./styles');
 const styleSyntax = ['sass', 'scss', 'css'];

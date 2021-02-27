@@ -23,6 +23,15 @@ const DartSass = require('sass');
 const Fibers = require('fibers');
 
 /**
+ * @param isProduction
+ */
+function getPostcssPlugins(isProduction = false) {
+  const basePlugins = [postcss.flexBugsFixes(), postcss.presetEnv(), postcss.url(), postcss.autoprefixer()];
+  if (isProduction) return [...basePlugins, postcss.cssNano()];
+  return basePlugins;
+}
+
+/**
  * Loader chain for style factory
  *
  * @param {'css'|'scss'|'sass'} syntax - Style syntax kind
@@ -36,21 +45,13 @@ module.exports.styleLoaders = (syntax, isProduction, isExtract = true) => [
     loader: 'css-loader',
     options: {
       sourceMap: !isProduction,
-    }, ////////////////////////////////
+    },
   },
   {
     loader: 'postcss-loader',
     options: {
       sourceMap: !isProduction,
-      postcssOptions: {
-        plugins: [
-          postcss.flexBugsFixes(),
-          postcss.presetEnv(),
-          postcss.cssUrl(),
-          postcss.autoprefixer(),
-          ...(isProduction ? [postcss.cssNano()] : []),
-        ],
-      },
+      postcssOptions: { plugins: getPostcssPlugins(isProduction) },
     },
   },
   {
@@ -58,10 +59,7 @@ module.exports.styleLoaders = (syntax, isProduction, isExtract = true) => [
     options: {
       sourceMap: !isProduction,
       implementation: DartSass,
-      sassOptions: {
-        fiber: Fibers,
-        indentedSyntax: syntax === 'sass',
-      },
+      sassOptions: { fiber: Fibers, indentedSyntax: syntax === 'sass' },
     },
   },
 ];

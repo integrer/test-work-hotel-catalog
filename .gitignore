@@ -27,3 +27,6 @@ yarn.lock
 
 ### VS Code ###
 .vscode/
+
+### Log files ###
+*.log

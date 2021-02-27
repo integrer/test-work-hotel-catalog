@@ -43,6 +43,9 @@ const config = {
     chunkFilename: 'js/[name].js?[hash]',
     filename: 'js/[name].js?[hash]',
   },
+  resolve: {
+    extensions: ['*', '.js', '.ts', '.vue', ...styleSyntax.map(s => '.' + s)],
+  },
   module: { rules: clientRules },
   plugins: [...stylePlugins(), new VueLoaderPlugin()],
 };

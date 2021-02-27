@@ -13,6 +13,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const { styleLoaders, stylePlugins } = require('./styles');
+const styleSyntax = ['sass', 'scss', 'css'];
 
 const clientRules = [
   {
@@ -23,7 +24,7 @@ const clientRules = [
     test: /\.vue$/,
     use: ['vue-loader'],
   },
-  ...['sass', 'scss', 'css'].map(syntax => ({
+  ...styleSyntax.map(syntax => ({
     test: new RegExp(`\\.${syntax}$`),
     use: styleLoaders(syntax, IS_PRODUCTION),
   })),

@@ -68,8 +68,8 @@ module.exports.stylePlugins = (isExtract = true) =>
   isExtract
     ? [
         new ExtractCssChunks({
-          filename: 'css/[name].css?[hash]',
-          chunkFilename: 'css/[name].css?[hash]',
+          filename: 'css/[name].[contenthash].css',
+          chunkFilename: 'css/[name].[contenthash].css?',
         }),
       ]
     : [];

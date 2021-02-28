@@ -52,18 +52,9 @@ const clientRules = [
   },
 ];
 
-const cleanWebpackPluginPrefs = {
-  cleanOnceBeforeBuildPatterns: [
-    ...['build.js', '*.bundle.js', 'style.css', '*.style.css'].flatMap(n => [n, n + '.map']),
-    '/css/**',
-    'index.html',
-  ],
-};
+const cleanWebpackPluginPrefs = { cleanOnceBeforeBuildPatterns: ['/js/**', '/css/**', 'index.html'] };
 
 const htmlOptions = {
-  inject: false,
-  template: require('html-webpack-template'),
-
   appMountId: 'app',
   lang: 'ru',
   title: 'Каталог гостиниц',
@@ -75,17 +66,10 @@ const config = {
   target: 'web',
   entry: { build: ['./src', 'bootstrap'] },
   devtool: IS_PRODUCTION ? 'inline-source-map' : 'nosources-cheap-source-map',
-  optimization: IS_PRODUCTION
-    ? {
-        splitChunks: {
-          chunks: 'all',
-        },
-      }
-    : undefined,
   output: {
     path: path.resolve(__dirname, process.env['WEBPACK_OUTPUT_PATH'] || '../dist'),
-    chunkFilename: 'js/[name].js?[hash]',
-    filename: 'js/[name].js?[hash]',
+    chunkFilename: 'js/[name].[contenthash].js',
+    filename: 'js/[name].[contenthash].js',
   },
   resolve: {
     extensions: ['*', '.js', '.ts', '.vue', ...styleSyntax.map(s => '.' + s)],

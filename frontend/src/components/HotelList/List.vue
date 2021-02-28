@@ -1,6 +1,6 @@
 <script>
 import Pagination from 'vuejs-paginate';
-import { constant } from 'lodash';
+import constant from 'lodash/constant';
 
 const ITEMS_PER_PAGE = 3;
 

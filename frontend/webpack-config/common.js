@@ -64,7 +64,7 @@ const htmlOptions = {
 const config = {
   mode: process.env.NODE_ENV,
   target: 'web',
-  entry: { build: ['./src', 'bootstrap'] },
+  entry: './src',
   devtool: IS_PRODUCTION ? 'inline-source-map' : 'nosources-cheap-source-map',
   output: {
     path: path.resolve(__dirname, process.env['WEBPACK_OUTPUT_PATH'] || '../dist'),

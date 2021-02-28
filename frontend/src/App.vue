@@ -1,7 +1,8 @@
 <script>
 import ListComponents, { emptyQuery } from './components/HotelList';
 
-import { debounce, partial } from 'lodash';
+import debounce from 'lodash/debounce';
+import partial from 'lodash/partial';
 
 /** @typedef RawQuery
  *  @property {string | undefined} country Selected country

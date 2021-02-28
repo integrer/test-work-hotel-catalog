@@ -55,6 +55,8 @@ const clientRules = [
 const cleanWebpackPluginPrefs = { cleanOnceBeforeBuildPatterns: ['/js/**', '/css/**', 'index.html'] };
 
 const htmlOptions = {
+  template: require('html-webpack-template'),
+
   appMountId: 'app',
   lang: 'ru',
   title: 'Каталог гостиниц',

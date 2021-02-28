@@ -124,7 +124,7 @@ export function emptyQuery() {
         <div class="col-2">0</div>
         <div class="col">
           <input
-            v-model.number="value.priceMax"
+            :value="value.priceMax"
             v-bind="priceMaxSetup"
             class="form-control-range"
             @input="commitValue('priceMax', +$event.target.value)"

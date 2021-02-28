@@ -39,30 +39,29 @@ function getPostcssPlugins(isProduction = false) {
  * @param {boolean} isExtract - Denotes if css chunks extraction is required
  * @returns {RuleSetUseItem[]} Loader chain
  */
-module.exports.styleLoaders = (syntax, isProduction, isExtract = true) => [
-  ...(isExtract ? [{ loader: ExtractCssChunks.loader, options: { hmr: !isProduction } }] : []),
-  {
-    loader: 'css-loader',
-    options: {
-      sourceMap: !isProduction,
+module.exports.styleLoaders = (syntax, isProduction, isExtract = true) => {
+  const sourceMap = true;
+
+  return [
+    ...(isExtract ? [{ loader: ExtractCssChunks.loader, options: { hmr: !isProduction } }] : []),
+    { loader: 'css-loader', options: { sourceMap } },
+    {
+      loader: 'postcss-loader',
+      options: {
+        sourceMap,
+        postcssOptions: { plugins: getPostcssPlugins(isProduction) },
+      },
     },
-  },
-  {
-    loader: 'postcss-loader',
-    options: {
-      sourceMap: !isProduction,
-      postcssOptions: { plugins: getPostcssPlugins(isProduction) },
+    {
+      loader: 'sass-loader',
+      options: {
+        sourceMap,
+        implementation: DartSass,
+        sassOptions: { fiber: Fibers, indentedSyntax: syntax === 'sass' },
+      },
     },
-  },
-  {
-    loader: 'sass-loader',
-    options: {
-      sourceMap: !isProduction,
-      implementation: DartSass,
-      sassOptions: { fiber: Fibers, indentedSyntax: syntax === 'sass' },
-    },
-  },
-];
+  ];
+};
 
 module.exports.stylePlugins = (isExtract = true) =>
   isExtract

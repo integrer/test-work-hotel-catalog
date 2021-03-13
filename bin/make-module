@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+import sys
+import os
+import io
+import subprocess
+
+from argparse import ArgumentParser, Namespace
+
+from cli import parse_args
+from template_generator import generate_dockerfile, DOCKERFILE_TEMPLATE_NAME
+from env import configure
+
+
+def _define_args(parser: ArgumentParser):
+    parser.description = 'generates new dockerfiles for selected modules'
+
+    available_modes = ['production', 'development']
+
+    parser.add_argument(
+        '--mode', help='Mode to build modules',
+        choices=available_modes, default=available_modes[0],
+    )
+
+    parser.add_argument(
+        '-o', '--output', help='Directory to output generated dockerfile',
+        type=str,
+    )
+
+    parser.add_argument(
+        '-b', '--build', help='Build images by generated dockerfile',
+        action='store_true',
+    )
+
+    parser.add_argument(
+        '-t', '--tag', help="Name and optionally tag in 'name:tag' format",
+        type=str,
+    )
+
+    parser.add_argument(
+        '-D', '--debug', help='Makes application to output debugging information',
+        action='store_true',
+    )
+
+    parser.add_argument(
+        '-d', '--dry-run', help='Run app without making changes',
+        action='store_true',
+    )
+
+    parser.add_argument(
+        '--module-path', help='Module location, that should contain dockerfile template. Defaults to ./MODULE_NAME',
+        type=str,
+    )
+
+    parser.add_argument(
+        '--template', help='Template filename',
+        type=str, default=DOCKERFILE_TEMPLATE_NAME,
+    )
+
+    parser.add_argument('module', help='Module that should built', nargs=1)
+
+
+def _validate_args(args: Namespace):
+    if not any([args.output, args.build, args.dry_run]):
+        raise ValueError("none of output and build options was provided.\n"
+                         "TIP: Consider use '--dry-run' option")
+
+    args.module = args.module[0]
+    args.module_path = args.module_path or os.path.join('./', args.module)
+
+    template_path = os.path.join(args.module_path, args.template)
+    if not os.path.isfile(template_path):
+        raise ValueError(f"'{template_path}' is not a file")
+
+    if args.output and os.path.isfile(args.output):
+        raise ValueError(f"output '{args.output}' should be a directory")
+
+
+def main():
+    args = parse_args(_define_args, _validate_args)
+
+    configure(args.mode, args.module_path)
+
+    dockerfile_args = dict(mode=args.mode, env=dict(os.environ))
+    dockerfile_content = generate_dockerfile(args.module_path, args.template, dockerfile_args)
+
+    if args.debug:
+        print(dockerfile_content)
+
+    if not args.dry_run:
+        if args.output:
+            if not os.path.exists(args.output):
+                os.makedirs(args.output)
+            with io.open(os.path.join(args.output, args.module + '.dockerfile'), 'w') as output:
+                output.write(dockerfile_content)
+        if args.build:
+            subprocess.run(
+                ['docker', 'build',
+                    '-f', '-',
+                    *(['-t', args.tag] if args.tag else []),
+                    args.module_path
+                 ],
+                input=dockerfile_content,
+                stdout=sys.stdout, stderr=sys.stderr,
+            )
+
+
+main()

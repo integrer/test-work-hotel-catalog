@@ -1,0 +1,6 @@
+node_modules/
+dist/
+Dockerfile.jinja2
+.dockerignore
+*.iml
+*.log

@@ -99,7 +99,7 @@ def main():
                     *(['-t', args.tag] if args.tag else []),
                     args.module_path
                  ],
-                input=dockerfile_content,
+                input=dockerfile_content.encode('utf-8'),
                 stdout=sys.stdout, stderr=sys.stderr,
             )
 

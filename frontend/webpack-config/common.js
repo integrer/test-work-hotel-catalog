@@ -59,12 +59,12 @@ function getConfig({ mode = 'production', styleSyntax, entry, projectRoot = './'
 
   return {
     mode,
-    entry: `./src/${entry}`,
+    entry: path.resolve(projectRoot, 'src', entry),
     // browserslist prevents live reload in dev server
     target: serve ? 'web' : `browserslist:${isProduction ? entry : 'development'}`,
     devtool: isProduction ? 'inline-source-map' : 'nosources-cheap-source-map',
     output: {
-      path: process.env['WEBPACK_OUTPUT_PATH'] || path.resolve(projectRoot, `dist/${entry}`),
+      path: process.env['WEBPACK_OUTPUT_PATH'] || path.resolve(projectRoot, 'dist', entry),
       chunkFilename: 'js/[name].[contenthash].js',
       filename: 'js/[name].[contenthash].js',
     },

@@ -68,6 +68,20 @@ function getConfig({ mode = 'production', styleSyntax, entry, projectRoot = './'
       chunkFilename: 'js/[name].[contenthash].js',
       filename: 'js/[name].[contenthash].js',
     },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: 1,
+            name: 'vendors',
+            chunks: 'initial',
+            enforce: true,
+          },
+        },
+      },
+    },
     resolve: {
       extensions: ['*', '.js', '.ts', '.vue', ...styleSyntax.map(s => '.' + s)],
     },

@@ -59,8 +59,9 @@ function getConfig({ mode = 'production', styleSyntax, entry, projectRoot = './'
 
   return {
     mode,
-    target: `browserslist:${isProduction ? entry : 'development'}`,
     entry: `./src/${entry}`,
+    // browserslist prevents live reload in dev server
+    target: serve ? 'web' : `browserslist:${isProduction ? entry : 'development'}`,
     devtool: isProduction ? 'inline-source-map' : 'nosources-cheap-source-map',
     output: {
       path: process.env['WEBPACK_OUTPUT_PATH'] || path.resolve(projectRoot, `dist/${entry}`),

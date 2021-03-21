@@ -1,0 +1,14 @@
+FROM node:lts-alpine{% if mode == 'production' %} AS build{% endif %}
+
+WORKDIR /src/app
+
+COPY package.json yarn.lock ./
+RUN yarn
+
+COPY .*rc* webpack.config.js ./
+COPY webpack-config/ ./webpack-config/
+{% if mode == 'development' %}
+VOLUME /src/app/src
+
+CMD ["yarn", "dev", "--hot"]
+{% else %}{% endif %}

@@ -65,6 +65,7 @@ function getConfig({ mode = 'production', styleSyntax, entry, projectRoot = './'
     devtool: isProduction ? 'inline-source-map' : 'nosources-cheap-source-map',
     output: {
       path: process.env['WEBPACK_OUTPUT_PATH'] || path.resolve(projectRoot, 'dist', entry),
+      publicPath: '/',
       chunkFilename: 'js/[name].[contenthash].js',
       filename: 'js/[name].[contenthash].js',
     },
@@ -81,6 +82,10 @@ function getConfig({ mode = 'production', styleSyntax, entry, projectRoot = './'
           },
         },
       },
+    },
+    devServer: {
+      host: '0.0.0.0',
+      port: 8080,
     },
     resolve: {
       extensions: ['*', '.js', '.ts', '.vue', ...styleSyntax.map(s => '.' + s)],

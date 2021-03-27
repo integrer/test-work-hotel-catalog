@@ -107,7 +107,8 @@ def main():
         del missed_env_var_names
     apply_envs(envs, args.override_envs)
 
-    dockerfile_args = dict(mode=args.mode, env=dict(os.environ))
+    dockerfile_args = dict(mode=args.mode, env=dict(os.environ),
+                           defined_var_names=defined_vars, added_var_names=set(envs))
     dockerfile_content = generate_dockerfile(args.module_path, args.template, dockerfile_args)
 
     if args.debug:

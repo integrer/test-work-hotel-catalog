@@ -8,7 +8,7 @@ from argparse import ArgumentParser, Namespace
 
 from cli import parse_args
 from template_generator import generate_dockerfile, DOCKERFILE_TEMPLATE_NAME
-from env import configure
+from env import get_envs, apply_envs
 
 
 def _define_args(parser: ArgumentParser):
@@ -56,6 +56,11 @@ def _define_args(parser: ArgumentParser):
         type=str, default=DOCKERFILE_TEMPLATE_NAME,
     )
 
+    parser.add_argument(
+        '--override-envs', help='Override exist environment variables with values from .env* files',
+        action='store_true',
+    )
+
     parser.add_argument('module', help='Module that should built', nargs=1)
 
 
@@ -78,7 +83,8 @@ def _validate_args(args: Namespace):
 def main():
     args = parse_args(_define_args, _validate_args)
 
-    configure(args.mode, args.module_path)
+    envs = get_envs(args.mode, args.module_path)
+    apply_envs(envs, args.override_envs)
 
     dockerfile_args = dict(mode=args.mode, env=dict(os.environ))
     dockerfile_content = generate_dockerfile(args.module_path, args.template, dockerfile_args)

@@ -3,6 +3,7 @@ import sys
 import os
 import io
 import subprocess
+from typing import Callable
 
 from argparse import ArgumentParser, Namespace
 
@@ -64,24 +65,25 @@ def _define_args(parser: ArgumentParser):
     parser.add_argument('module', help='Module that should built', nargs=1)
 
 
-def _validate_args(args: Namespace):
+def _validate_args(args: Namespace, raise_err: Callable[[str], None]):
     if not any([args.output, args.build, args.dry_run]):
-        raise ValueError("none of output and build options was provided.\n"
-                         "TIP: Consider use '--dry-run' option")
+        raise_err("none of output and build options was provided.\n"
+                  "TIP: Consider use '--dry-run' option")
 
     args.module = args.module[0]
     args.module_path = args.module_path or os.path.join('./', args.module)
 
     template_path = os.path.join(args.module_path, args.template)
     if not os.path.isfile(template_path):
-        raise ValueError(f"'{template_path}' is not a file")
+        raise_err(f"'{template_path}' is not a file")
 
     if args.output and os.path.isfile(args.output):
-        raise ValueError(f"output '{args.output}' should be a directory")
+        raise_err(f"output '{args.output}' should be a directory")
 
 
 def main():
-    args = parse_args(_define_args, _validate_args)
+    args, raise_err = parse_args(_define_args)
+    _validate_args(args, raise_err)
 
     envs = get_envs(args.mode, args.module_path)
     apply_envs(envs, args.override_envs)

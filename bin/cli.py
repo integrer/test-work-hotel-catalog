@@ -1,17 +1,10 @@
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
-from typing import Callable
+from typing import Callable, Tuple
 
 
-def parse_args(define_args: Callable[[ArgumentParser], None], validate_args: Callable[[Namespace], None]) -> Namespace:
+def parse_args(define_args: Callable[[ArgumentParser], None]) -> Tuple[Namespace, Callable[[str], None]]:
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
     define_args(parser)
 
-    args = parser.parse_args()
-
-    try:
-        validate_args(args)
-    except ValueError as ex:
-        parser.error(str(ex))
-
-    return args
+    return parser.parse_args(), lambda err: parser.error(err)

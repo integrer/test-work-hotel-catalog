@@ -15,3 +15,8 @@ def apply_envs(envs: Dict[str, Optional[str]], override=False):
     for name, value in envs:
         if (override or name not in environ) and value is not None:
             environ[name] = value
+
+
+def get_defined_env_names(location: str) -> Set[str]:
+    declaration_path = path.join(location, '.env.example')
+    return set(dotenv_values(declaration_path)) if path.isfile(declaration_path) else set()

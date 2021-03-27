@@ -3,13 +3,13 @@ import sys
 import os
 import io
 import subprocess
-from typing import Callable
+from typing import Callable, List
 
 from argparse import ArgumentParser, Namespace
 
 from cli import parse_args
 from template_generator import generate_dockerfile, DOCKERFILE_TEMPLATE_NAME
-from env import get_envs, apply_envs
+from env import get_envs, apply_envs, get_defined_env_names
 
 
 def _define_args(parser: ArgumentParser):
@@ -62,6 +62,11 @@ def _define_args(parser: ArgumentParser):
         action='store_true',
     )
 
+    parser.add_argument(
+        '--ignore-miss-env-vars', help='Ignore missing variables, defined in .env.example file',
+        action='store_true',
+    )
+
     parser.add_argument('module', help='Module that should built', nargs=1)
 
 
@@ -81,11 +86,25 @@ def _validate_args(args: Namespace, raise_err: Callable[[str], None]):
         raise_err(f"output '{args.output}' should be a directory")
 
 
+def _format_missed_env_vars_error(names: List[str]) -> str:
+    max_output = 5
+    return ('Missed variables, that was declared in .env.example file:\n ' + '\n '.join(names[:max_output]) +
+            (f'\n (...{len(names) - max_output} more)' if len(names) > max_output else '') +
+            '\n    TIP: declare variables in at least one of .env* files or in your environment or suppress this error'
+            '\n    by calling this program with \'--ignore-miss-env-vars\' flag')
+
+
 def main():
     args, raise_err = parse_args(_define_args)
     _validate_args(args, raise_err)
 
     envs = get_envs(args.mode, args.module_path)
+    defined_vars = get_defined_env_names(args.module_path)
+    if not args.ignore_miss_env_vars:
+        missed_env_var_names = defined_vars - set(envs)
+        if missed_env_var_names:
+            raise_err(_format_missed_env_vars_error([*missed_env_var_names]))
+        del missed_env_var_names
     apply_envs(envs, args.override_envs)
 
     dockerfile_args = dict(mode=args.mode, env=dict(os.environ))
